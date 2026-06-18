@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+import requests
 
 app = FastAPI()
 
@@ -56,50 +57,35 @@ async def preguntar(
     pregunta: str = Form(...)
 ):
 
-    pregunta_lower = pregunta.lower()
+    contexto = f"""
+Eres un asistente virtual de un aeropuerto.
 
-    respuesta = "No encontré información."
+Información de vuelos:
 
-    for vuelo in vuelos:
+{vuelos}
 
-        codigo = vuelo["codigo"].lower()
+Responde únicamente con la información de estos vuelos.
 
-        if codigo in pregunta_lower:
+Pregunta del usuario:
+{pregunta}
+"""
 
-            respuesta = (
-                f"Vuelo {vuelo['codigo']} | "
-                f"Origen: {vuelo['origen']} | "
-                f"Destino: {vuelo['destino']} | "
-                f"Estado: {vuelo['estado']}"
-            )
+    try:
 
-    if "salidas" in pregunta_lower:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3",
+                "prompt": contexto,
+                "stream": False
+            }
+        )
 
-        lista = []
+        respuesta = response.json()["response"]
 
-        for v in vuelos:
+    except Exception as e:
 
-            if v["tipo"] == "salida":
-
-                lista.append(
-                    f"{v['codigo']} → {v['destino']} ({v['estado']})"
-                )
-
-        respuesta = "<br>".join(lista)
-
-    elif "llegadas" in pregunta_lower:
-
-        lista = []
-
-        for v in vuelos:
-
-            if v["tipo"] == "llegada":
-
-                lista.append(
-                    f"{v['codigo']} ← {v['origen']} ({v['estado']})"
-                )
-
-        respuesta = "<br>".join(lista)
+        respuesta = f"Error conectando con Ollama: {e}"
 
     return templates.TemplateResponse(
         "index.html",

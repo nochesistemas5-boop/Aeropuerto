@@ -1,47 +1,97 @@
 <!DOCTYPE html>
-<html>
-<head>
 
-<title>Aeropuerto Inteligente</title>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aeropuerto Inteligente IA</title>
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
 body{
-font-family:Arial;
-background:#f4f4f4;
-padding:40px;
+    background:linear-gradient(135deg,#003366,#007bff);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
 .container{
-background:white;
-padding:30px;
-border-radius:10px;
-max-width:900px;
-margin:auto;
+    width:100%;
+    max-width:900px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
 }
 
 h1{
-color:#003366;
+    text-align:center;
+    color:#003366;
+    margin-bottom:20px;
+}
+
+.info{
+    background:#eef4ff;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.info ul{
+    margin-top:10px;
+    margin-left:20px;
+}
+
+form{
+    display:flex;
+    gap:10px;
 }
 
 input{
-width:80%;
-padding:10px;
+    flex:1;
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
 }
 
 button{
-padding:10px;
-background:#007bff;
-color:white;
-border:none;
-cursor:pointer;
+    padding:15px 25px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0056b3;
 }
 
 .respuesta{
-margin-top:20px;
-padding:15px;
-background:#eef;
-border-radius:8px;
+    margin-top:20px;
+    background:#f8f9fa;
+    padding:20px;
+    border-radius:10px;
+    border-left:5px solid #007bff;
+    min-height:100px;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    color:#777;
 }
 
 </style>
@@ -52,23 +102,28 @@ border-radius:8px;
 
 <div class="container">
 
-<h1>✈️ IA Distribuida de Aeropuerto</h1>
+<h1>✈️ Aeropuerto Inteligente con IA</h1>
 
-<p>Puedes preguntar:</p>
+<div class="info">
+<b>Ejemplos:</b>
 
 <ul>
-<li>¿Cuál es mi vuelo AV101?</li>
-<li>Mostrar salidas</li>
-<li>Mostrar llegadas</li>
-<li>Estado del vuelo AA404</li>
+<li>¿Cuál es el estado del vuelo AV101?</li>
+<li>¿Qué vuelos están retrasados?</li>
+<li>¿Cuáles son las salidas?</li>
+<li>¿Cuáles son las llegadas?</li>
+<li>Muéstrame todos los vuelos disponibles.</li>
 </ul>
+
+</div>
 
 <form action="/preguntar" method="post">
 
 <input
 type="text"
 name="pregunta"
-placeholder="Escribe tu pregunta">
+placeholder="Escribe tu pregunta..."
+required>
 
 <button type="submit">
 Preguntar
@@ -77,7 +132,17 @@ Preguntar
 </form>
 
 <div class="respuesta">
+
+{% if respuesta %}
 {{ respuesta | safe }}
+{% else %}
+Esperando tu consulta...
+{% endif %}
+
+</div>
+
+<div class="footer">
+Sistema Inteligente de Información Aeroportuaria
 </div>
 
 </div>
