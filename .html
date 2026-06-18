@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Aeropuerto Inteligente</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+max-width:900px;
+margin:auto;
+}
+
+h1{
+color:#003366;
+}
+
+input{
+width:80%;
+padding:10px;
+}
+
+button{
+padding:10px;
+background:#007bff;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.respuesta{
+margin-top:20px;
+padding:15px;
+background:#eef;
+border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✈️ IA Distribuida de Aeropuerto</h1>
+
+<p>Puedes preguntar:</p>
+
+<ul>
+<li>¿Cuál es mi vuelo AV101?</li>
+<li>Mostrar salidas</li>
+<li>Mostrar llegadas</li>
+<li>Estado del vuelo AA404</li>
+</ul>
+
+<form action="/preguntar" method="post">
+
+<input
+type="text"
+name="pregunta"
+placeholder="Escribe tu pregunta">
+
+<button type="submit">
+Preguntar
+</button>
+
+</form>
+
+<div class="respuesta">
+{{ respuesta | safe }}
+</div>
+
+</div>
+
+</body>
+</html>
